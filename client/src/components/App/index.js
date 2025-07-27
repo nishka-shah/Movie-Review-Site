@@ -4,7 +4,6 @@ import Landing from '../Landing';
 import Search from '../Search';
 import Review from '../Review';
 import MyPage from '..MyPage';
-import MyAppbar from './components/App/MyAppbar';
 
 
 
@@ -13,7 +12,6 @@ const App = () => {
 
   return (
     <Router>
-      <MyAppbar />
       <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/Search" element={<Search />} />
