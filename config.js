@@ -1,9 +1,9 @@
 let config = {
   host: 'localhost',
-  user: '',
+  user: 'n27shah',
   port: '3306',
   password: 'MSE245-student',
-  database: ''
+  database: 'n27shah'
 };
  
 export default config;

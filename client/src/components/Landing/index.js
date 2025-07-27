@@ -1,11 +1,12 @@
 import * as React from 'react';
-import MyAppbar from '../components/App/MyAppbar';
+import MyAppbar from '../App/MyAppbar';
 
 const Landing = () => {
 
 
   return (
     <div>
+      <MyAppbar />
       {/* TODO: landing page */}
 
 

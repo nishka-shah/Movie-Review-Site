@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Landing from '../Landing';
 import Search from '../Search';
 import Review from '../Review';
-import MyPage from '..MyPage';
+import MyPage from '../MyPage';
 
 
 
@@ -18,7 +18,6 @@ const App = () => {
           <Route path="/Review" element={<Review />} />
           <Route path="/MyPage" element={<MyPage />} />
         </Routes>
-        <h1>MSE 245 - D3 template </h1>
         {/* Render <Review /> child component */}
     </Router>
   );
