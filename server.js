@@ -20,38 +20,38 @@ app.use(express.static(path.join(__dirname, "client/build")));
 // GET /api/movies - retrieve all movies from database  
 // POST /api/reviews - create a new movie review
 app.get('/api/movies', (req, res) => {
-    const connection = mysql.createConnection(config);
-    connection.query('SELECT * FROM movies', (err, results) => {
-        if (err) {
-            console.error('Error fetching movies:', err);
-            res.status(500).json({ error: 'Failed to retrieve movies' });
-        } else {
-            res.json(results);
-        }
+  const connection = mysql.createConnection(config);
+  connection.query('SELECT * FROM movies', (err, results) => {
+    if (err) {
+      console.error('Error fetching movies:', err);
+      res.status(500).json({ error: 'Failed to retrieve movies' });
+    } else {
+      res.json(results);
+    }
 
-        connection.end();
-    });
+    connection.end();
+  });
 });
 
 // POST /api/reviews - create a new movie review
 app.use(express.json());
 
 app.post('/api/reviews', (req, res) => {
-    const { movieID, userID, reviewTitle, reviewContent, reviewScore } = req.body;
+  const { movieID, userID, reviewTitle, reviewContent, reviewScore } = req.body;
 
-    const connection = mysql.createConnection(config);
-    const query = 'INSERT INTO Review (movieID, userID, reviewTitle, reviewContent, reviewScore) VALUES (?, ?, ?, ?, ?)';
+  const connection = mysql.createConnection(config);
+  const query = 'INSERT INTO Review (movieID, userID, reviewTitle, reviewContent, reviewScore) VALUES (?, ?, ?, ?, ?)';
 
-    const values = [movieID, userID, reviewTitle, reviewContent, reviewScore];
+  const values = [movieID, userID, reviewTitle, reviewContent, reviewScore];
 
-    connection.query(query, values, (err, results) => {
-        if (err) {
-            res.status(500).json({ error: 'Failed to add review' });
-        } else {
-            res.status(201).json({ message: 'Review added' });
-            connection.end();
-        }
-    });
+  connection.query(query, values, (err, results) => {
+    if (err) {
+      res.status(500).json({ error: 'Failed to add review' });
+    } else {
+      res.status(201).json({ message: 'Review added' });
+      connection.end();
+    }
+  });
 
 });
 // Search Component
@@ -99,7 +99,7 @@ app.post('/api/search', async (req, res) => {
       const results = rows.map(row => ({
         title: row.title,
         directors: row.directors,
-        avg_rating: Number(row.avg_rating).toFixed(2),
+        avg_rating: row.avg_rating === 'N/A' ? 'N/A' : Number(row.avg_rating).toFixed(2),
         ...(row.reviews ? { reviews: row.reviews.split('||').join('\n') } : {})
       }));
 
@@ -111,4 +111,4 @@ app.post('/api/search', async (req, res) => {
 });
 
 
-app.listen(port, () => console.log(`Listening on port ${ port } `)); //for the dev version
+app.listen(port, () => console.log(`Listening on port ${port} `)); //for the dev version
