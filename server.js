@@ -110,5 +110,42 @@ app.post('/api/search', async (req, res) => {
   });
 });
 
+// Get top 5 rated movies (Landing page)
+app.get('/api/top-movies', (req, res) => {
+  const connection = mysql.createConnection(config);
+  const query = `
+    SELECT M.name AS title, ROUND(AVG(R.reviewScore), 2) AS avg_rating
+    FROM movies M
+    JOIN Review R ON M.id = R.movieID
+    GROUP BY M.id
+    ORDER BY avg_rating DESC
+    LIMIT 5;
+  `;
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching top movies:', err);
+      res.status(500).json({ error: 'Failed to fetch top movies' });
+    } else {
+      res.json(results);
+    }
+    connection.end();
+  });
+});
+
+// Get total number of reviews (Landing page)
+app.get('/api/review-count', (req, res) => {
+  const connection = mysql.createConnection(config);
+  const query = 'SELECT COUNT(*) AS count FROM Review';
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching review count:', err);
+      res.status(500).json({ error: 'Failed to fetch review count' });
+    } else {
+      res.json(results[0]);
+    }
+    connection.end();
+  });
+});
+
 
 app.listen(port, () => console.log(`Listening on port ${port} `)); //for the dev version
