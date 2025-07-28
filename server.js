@@ -147,5 +147,40 @@ app.get('/api/review-count', (req, res) => {
   });
 });
 
+// Random matchups (MyPage)
+app.get('/api/matchup', async (req, res) => {
+  try {
+    const [rows] = await db.promise().query(`
+      SELECT m.matchup_id, mo1.id AS movie1_id, mo1.name AS movie1_name,
+             mo2.id AS movie2_id, mo2.name AS movie2_name
+      FROM matchups m
+      JOIN movies mo1 ON m.movie1_id = mo1.id
+      JOIN movies mo2 ON m.movie2_id = mo2.id
+      ORDER BY RAND()
+      LIMIT 1;
+    `);
+    res.json(rows[0]);
+  } catch (err) {
+    console.error("Error fetching matchup:", err);
+    res.status(500).json({ error: 'Failed to fetch matchup' });
+  }
+});
+
+// Submit a vote (MyPage)
+app.post('/api/vote', async (req, res) => {
+  const { matchup_id, winner_movie_id } = req.body;
+  try {
+    await db.promise().query(
+      'INSERT INTO match_votes (matchup_id, winner_movie_id) VALUES (?, ?)',
+      [matchup_id, winner_movie_id]
+    );
+    res.json({ message: 'Vote recorded' });
+  } catch (err) {
+    console.error("Error saving vote:", err);
+    res.status(500).json({ error: 'Failed to save vote' });
+  }
+});
+
+
 
 app.listen(port, () => console.log(`Listening on port ${port} `)); //for the dev version
