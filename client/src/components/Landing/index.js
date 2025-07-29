@@ -24,74 +24,133 @@ const Landing = () => {
 
   return (
     <>
-    <MyAppbar />
-    <Box
-      sx={{
-        backgroundImage: `url(${backgroundImg})`, 
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        minHeight: '100vh',
-        padding: 4,
-        color: 'white',
-      }}
-    >
-      {/* App title and tagline */}
-      <Typography variant="h2" gutterBottom sx={{ fontWeight: 'bold' }}>
-        Popcorn & Opinions
-      </Typography>
-      <Typography variant="h6" gutterBottom>
-        May the reviews be ever in your favour.
-      </Typography>
+      <MyAppbar />
+      <Box sx={{ position: 'relative', minHeight: '100vh' }}>
+        {/* Background Image */}
+        <Box
+          sx={{
+            backgroundImage: `url(${backgroundImg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            minHeight: '100vh',
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            zIndex: 0,
+          }}
+        />
 
-      {/* Buttons */}
-      <Grid container spacing={2} sx={{ my: 2 }}>
-        <Grid item>
-          <Button
-            variant="contained"
-            color="primary"
-            component={Link}
-            to="/search"
-            id="nav-search" 
-          >
-            Search Movies
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button
-            variant="outlined"
-            color="secondary"
-            component={Link}
-            to="/review"
-            id="nav-review" 
-          >
-            Write a Review
-          </Button>
-        </Grid>
-      </Grid>
+        {/* Overlay */}
+        <Box
+          sx={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // Adjust transparency here
+            zIndex: 1,
+          }}
+        />
 
-      {/* Stats */}
-      <Typography variant="subtitle1" sx={{ mt: 4 }}>
-        🧮 Total Reviews Submitted: <strong>{totalReviews}</strong>
-      </Typography>
+        {/* Foreground content */}
+        <Box
+          sx={{
+            position: 'relative',
+            zIndex: 2,
+            padding: 4,
+            color: 'white',
+          }}
+        >
+          {/* App title and tagline */}
+          <Typography variant="h2" gutterBottom sx={{ fontWeight: 'bold', textShadow: '2px 2px 8px rgba(0,0,0,0.5)' }}>
+            Popcorn & Opinions
+          </Typography>
+          <Typography variant="h6" gutterBottom>
+            May the reviews be ever in your favour.
+          </Typography>
 
-      {/* Top 5 Movies */}
-      <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
-        ⭐ Top 5 Rated Movies
-      </Typography>
-
-      <Grid container spacing={2}>
-        {topMovies.map((movie, index) => (
-          <Grid item xs={12} md={6} lg={4} key={index}>
-            <Paper sx={{ padding: 2, backgroundColor: 'rgba(0,0,0,0.7)' }}>
-              <Typography variant="h6">{movie.title}</Typography>
-              <Typography>Average Rating: {movie.avg_rating}</Typography>
-            </Paper>
+          {/* Buttons */}
+          <Grid container spacing={2} sx={{ my: 2 }}>
+            <Grid item>
+              <Button
+                variant="contained"
+                sx={{
+                  fontWeight: 600,
+                  borderRadius: 8,
+                  color: 'white',
+                  backgroundColor: '#e50914', // Netflix red or any red you like
+                  '&:hover': {
+                    backgroundColor: '#c21807', // Slightly darker red on hover
+                  },
+                }}
+                component={Link}
+                to="/search"
+                id="nav-search"
+              >
+                Search Movies
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="outlined"
+                sx={{
+                  fontWeight: 600,
+                  borderRadius: 8,
+                  color: 'white',
+                  backgroundColor: '#e50914', // Netflix red or any red you like
+                  '&:hover': {
+                    backgroundColor: '#c21807', // Slightly darker red on hover
+                  },
+                }}
+                color="secondary"
+                component={Link}
+                to="/review"
+                id="nav-review"
+              >
+                Write a Review
+              </Button>
+            </Grid>
           </Grid>
-        ))}
-      </Grid>
-    </Box>
+
+          {/* Stats */}
+            <Typography variant="subtitle1">
+              Total Reviews Submitted: <strong style={{ fontSize: '1.2rem' }}>{totalReviews}</strong>
+            </Typography>
+          
+
+
+          {/* Top 5 Movies */}
+          <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
+            ⭐ Top 5 Movies
+          </Typography>
+
+          <Grid container spacing={2}>
+            {topMovies.map((movie, index) => (
+              <Grid item xs={12} md={6} lg={4} key={index}>
+                <Paper
+                  elevation={4}
+                  sx={{
+                    padding: 2,
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                    '&:hover': {
+                      transform: 'scale(1.03)',
+                      boxShadow: '0 0 10px #e50914',
+                      color: 'white',
+                      borderRadius: 2,
+                    },
+                  }}
+                    >
+                  <Typography variant="h6">{movie.title}</Typography>
+                  <Typography>Average Rating: {movie.avg_rating}</Typography>
+                </Paper>
+              </Grid>
+            ))}
+        </Grid>
+      </Box>
+    </Box >
     </>
-  );
+  )
 };
+
 
 export default Landing;
