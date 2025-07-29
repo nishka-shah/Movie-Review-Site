@@ -1,47 +1,32 @@
-import * as React from 'react';
-//import all necessary libraries here, e.g., Material-UI Typography, as follows
-import Typography from '@mui/material/Typography';
-import RadioGroup from '@mui/material/RadioGroup';
-import Radio from '@mui/material/Radio';
-import InputLabel from '@mui/material/InputLabel';
+import { Rating, Typography, Box } from '@mui/material';
 
 const ReviewRating = (props) => {
-
-  //states declarations
-  //constants and functions declarations
-
   return (
-    <>
-    <InputLabel htmlFor="review-rating">Enter your Rating</InputLabel>
-    <RadioGroup
-        id="review-rating"
-        row
-        value={props.selectedRating}
-        onChange={props.onRatingChange}
-      >
-        <label>
-          <Radio value="1" />
-          1
-        </label>
-        <label>
-          <Radio value="2" />
-          2
-        </label>
-        <label>
-          <Radio value="3" />
-          3
-        </label>
-        <label>
-          <Radio value="4" />
-          4
-        </label>
-        <label>
-          <Radio value="5" />
-          5
-        </label>
-      </RadioGroup>
-    </>
+    <Box>
+      <Typography variant="h6" sx={{ mb: 1 }}>
+        ⭐ Enter your Rating
+      </Typography>
+
+      <Rating
+        name="movie-rating"
+        value={Number(props.selectedRating)}
+        onChange={(event, newValue) => {
+          props.onRatingChange({ target: { value: newValue } });
+        }}
+        max={5}
+        sx={{
+          color: '#e50914',
+          fontSize: '2rem', // makes stars larger
+        }}
+      />
+
+      {props.error && (
+        <Typography sx={{ mt: 1, color: '#ff4d4d', fontWeight: 500 }}>
+          {props.error}
+        </Typography>
+      )}
+    </Box>
   );
-}
+};
 
 export default ReviewRating;

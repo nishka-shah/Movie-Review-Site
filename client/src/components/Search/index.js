@@ -51,7 +51,7 @@ const Search = () => {
           {/* Header */}
           <Grid item xs={12}>
             <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 1 }}>
-              🎬 Search Movies
+              Search Movies
             </Typography>
             <Typography variant="subtitle1">
               Find movies by actor, director, or title.
