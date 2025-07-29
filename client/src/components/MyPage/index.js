@@ -11,9 +11,11 @@ const MyPage = () => {
   const fetchMatchup = async () => {
     const res = await fetch('/api/matchup');
     const data = await res.json();
+
     setMatchup(data);
     setVoted(false);
   };
+
 
   const submitVote = async (winnerId) => {
     await fetch('/api/vote', {

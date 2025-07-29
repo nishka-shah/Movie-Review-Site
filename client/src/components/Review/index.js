@@ -102,12 +102,13 @@ const Review = () => {
       console.log("Server response:", result);
 
       if (response.ok) {
+        const selectedMovieObj = movies.find((m) => m.id === parseInt(selectedMovie));
         setSubmittedReview({
-          selectedMovie,
-          enteredTitle,
-          enteredReview,
-          selectedRating
-        });
+            selectedMovie: selectedMovieObj?.name || 'Unknown Movie',
+            enteredTitle,
+            enteredReview,
+            selectedRating
+          });
         setShowConfirmation(true);
       } else {
         console.error("Failed to submit review");
