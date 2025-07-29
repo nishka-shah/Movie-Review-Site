@@ -42,6 +42,13 @@ const MyPage = () => {
           <>
             <Grid item>
               <Paper elevation={3} sx={{ padding: 2 }}>
+                {matchup.movie1_poster && (
+                  <img
+                    src={matchup.movie1_poster}
+                    alt={matchup.movie1_name}
+                    style={{ width: '200px', height: 'auto', marginBottom: '10px' }}
+                  />
+                )}
                 <Typography variant="h6">{matchup.movie1_name}</Typography>
                 <Button
                   variant="contained"
@@ -52,8 +59,16 @@ const MyPage = () => {
                 </Button>
               </Paper>
             </Grid>
+
             <Grid item>
               <Paper elevation={3} sx={{ padding: 2 }}>
+                {matchup.movie2_poster && (
+                  <img
+                    src={matchup.movie2_poster}
+                    alt={matchup.movie2_name}
+                    style={{ width: '200px', height: 'auto', marginBottom: '10px' }}
+                  />
+                )}
                 <Typography variant="h6">{matchup.movie2_name}</Typography>
                 <Button
                   variant="contained"

@@ -153,8 +153,8 @@ app.get('/api/matchup', (req, res) => {
 
   const query = `
     SELECT 
-      m1.id AS movie1_id, m1.name AS movie1_name,
-      m2.id AS movie2_id, m2.name AS movie2_name,
+      m1.id AS movie1_id, m1.name AS movie1_name, m1.poster_url AS movie1_poster,
+      m2.id AS movie2_id, m2.name AS movie2_name, m2.poster_url AS movie2_poster,
       matchups.matchup_id AS matchup_id
     FROM matchups
     JOIN movies m1 ON matchups.movie1_id = m1.id
@@ -164,14 +164,15 @@ app.get('/api/matchup', (req, res) => {
 
   connection.query(query, (err, results) => {
     if (err) {
-      console.error('❌ Matchup fetch error:', err);
+      console.error('Matchup fetch error:', err);
       res.status(500).json({ error: 'Failed to fetch matchup' });
     } else {
-      res.json(results[0]);
+      res.json(results[0]); 
     }
     connection.end();
   });
 });
+
 
 
 
