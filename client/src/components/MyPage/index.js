@@ -5,6 +5,8 @@ import MyAppbar from '../App/MyAppbar';
 const MyPage = () => {
   const [matchup, setMatchup] = React.useState(null);
   const [voted, setVoted] = React.useState(false);
+  const [leaderboard, setLeaderboard] = React.useState([]);
+
 
   const fetchMatchup = async () => {
     const res = await fetch('/api/matchup');
@@ -20,15 +22,31 @@ const MyPage = () => {
       body: JSON.stringify({ matchup_id: matchup.matchup_id, winner_movie_id: winnerId }),
     });
     setVoted(true);
+    fetchLeaderboard();
   };
+
+
+  const fetchLeaderboard = async () => {
+    const res = await fetch('/api/vote-results');
+    const data = await res.json();
+    setLeaderboard(data);
+  };
+
+
 
   React.useEffect(() => {
     fetchMatchup();
   }, []);
 
   React.useEffect(() => {
-    console.log("🧪 Matchup:", matchup);
+    console.log("Matchup:", matchup);
   }, [matchup]);
+
+  React.useEffect(() => {
+    fetchMatchup();
+    fetchLeaderboard();
+  }, []);
+
 
   return (
     <>
@@ -80,6 +98,17 @@ const MyPage = () => {
               </Paper>
             </Grid>
           </>
+        )}
+
+        {leaderboard.length > 0 && (
+          <Grid item xs={12}>
+            <Typography variant="h5" align="center">🏆 Leaderboard</Typography>
+            {leaderboard.map((movie, index) => (
+              <Typography key={movie.name} align="center">
+                {index + 1}. {movie.name} — {movie.votes} votes
+              </Typography>
+            ))}
+          </Grid>
         )}
 
         {voted && (

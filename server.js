@@ -182,13 +182,13 @@ app.post('/api/vote', (req, res) => {
   const connection = mysql.createConnection(config);
 
   const query = `
-    INSERT INTO matchvotes (matchup_id, winner_movie_id)
+    INSERT INTO match_votes (matchup_id, winner_movie_id)
     VALUES (?, ?)
   `;
 
   connection.query(query, [matchup_id, winner_movie_id], (err, results) => {
     if (err) {
-      console.error('❌ Error saving vote:', err);
+      console.error('Error saving vote:', err);
       res.status(500).json({ error: 'Failed to save vote' });
     } else {
       res.status(201).json({ message: 'Vote saved' });
@@ -197,7 +197,27 @@ app.post('/api/vote', (req, res) => {
   });
 });
 
+app.get('/api/vote-results', (req, res) => {
+  const connection = mysql.createConnection(config);
+  const query = `
+    SELECT m.name, COUNT(*) AS votes
+    FROM match_votes mv
+    JOIN movies m ON mv.winner_movie_id = m.id
+    GROUP BY m.id
+    ORDER BY votes DESC
+  `;
 
+  // Display Aggregated Voting Results
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching results:', err);
+      res.status(500).json({ error: 'Failed to fetch results' });
+    } else {
+      res.json(results);
+    }
+    connection.end();
+  });
+});
 
 
 app.listen(port, () => console.log(`Listening on port ${port} `)); //for the dev version
