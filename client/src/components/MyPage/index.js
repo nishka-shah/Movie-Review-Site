@@ -3,19 +3,39 @@ import { Button, Typography, Grid, Paper } from '@mui/material';
 import MyAppbar from '../App/MyAppbar';
 
 const MyPage = () => {
+  const [allMatchups, setAllMatchups] = React.useState([]);
+  const [seenMatchups, setSeenMatchups] = React.useState(new Set());
   const [matchup, setMatchup] = React.useState(null);
   const [voted, setVoted] = React.useState(false);
   const [leaderboard, setLeaderboard] = React.useState([]);
+  const [sessionComplete, setSessionComplete] = React.useState(false);
 
-
-  const fetchMatchup = async () => {
-    const res = await fetch('/api/matchup');
+  const fetchAllMatchups = async () => {
+    const res = await fetch('/api/all-matchups');
     const data = await res.json();
-
-    setMatchup(data);
-    setVoted(false);
+    setAllMatchups(data);
   };
 
+  const fetchLeaderboard = async () => {
+    const res = await fetch('/api/vote-results');
+    const data = await res.json();
+    setLeaderboard(data);
+  };
+
+  const fetchNextMatchup = () => {
+    const remaining = allMatchups.filter(m => !seenMatchups.has(m.matchup_id));
+    if (remaining.length === 0) {
+      setMatchup(null);
+      setSessionComplete(true);
+      return;
+    }
+
+    const randomIndex = Math.floor(Math.random() * remaining.length);
+    const next = remaining[randomIndex];
+    setMatchup(next);
+    setSeenMatchups(prev => new Set(prev).add(next.matchup_id));
+    setVoted(false);
+  };
 
   const submitVote = async (winnerId) => {
     await fetch('/api/vote', {
@@ -27,28 +47,22 @@ const MyPage = () => {
     fetchLeaderboard();
   };
 
-
-  const fetchLeaderboard = async () => {
-    const res = await fetch('/api/vote-results');
-    const data = await res.json();
-    setLeaderboard(data);
+  const restartSession = () => {
+    setSeenMatchups(new Set());
+    setSessionComplete(false);
+    fetchNextMatchup();
   };
 
-
-
   React.useEffect(() => {
-    fetchMatchup();
-  }, []);
-
-  React.useEffect(() => {
-    console.log("Matchup:", matchup);
-  }, [matchup]);
-
-  React.useEffect(() => {
-    fetchMatchup();
+    fetchAllMatchups();
     fetchLeaderboard();
   }, []);
 
+  React.useEffect(() => {
+    if (allMatchups.length > 0) {
+      fetchNextMatchup();
+    }
+  }, [allMatchups]);
 
   return (
     <>
@@ -102,6 +116,24 @@ const MyPage = () => {
           </>
         )}
 
+        {voted && !sessionComplete && (
+          <Grid item xs={12} textAlign="center">
+            <Typography variant="h6">Vote recorded!</Typography>
+            <Button variant="outlined" onClick={fetchNextMatchup}>
+              Next Matchup
+            </Button>
+          </Grid>
+        )}
+
+        {sessionComplete && (
+          <Grid item xs={12} textAlign="center">
+            <Typography variant="h6">You've voted on all matchups!</Typography>
+            <Button variant="contained" onClick={restartSession}>
+              🔄 Try Again
+            </Button>
+          </Grid>
+        )}
+
         {leaderboard.length > 0 && (
           <Grid item xs={12}>
             <Typography variant="h5" align="center">🏆 Leaderboard</Typography>
@@ -112,18 +144,11 @@ const MyPage = () => {
             ))}
           </Grid>
         )}
-
-        {voted && (
-          <Grid item xs={12} textAlign="center">
-            <Typography variant="h6">Vote recorded!</Typography>
-            <Button variant="outlined" onClick={fetchMatchup}>
-              Next Matchup
-            </Button>
-          </Grid>
-        )}
       </Grid>
     </>
   );
 };
+
+
 
 export default MyPage;

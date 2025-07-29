@@ -219,5 +219,30 @@ app.get('/api/vote-results', (req, res) => {
   });
 });
 
+// Fetch all matchups
+app.get('/api/all-matchups', (req, res) => {
+  const connection = mysql.createConnection(config);
+  const query = `
+    SELECT 
+      matchups.matchup_id,
+      m1.id AS movie1_id, m1.name AS movie1_name, m1.poster_url AS movie1_poster,
+      m2.id AS movie2_id, m2.name AS movie2_name, m2.poster_url AS movie2_poster
+    FROM matchups
+    JOIN movies m1 ON matchups.movie1_id = m1.id
+    JOIN movies m2 ON matchups.movie2_id = m2.id
+  `;
+
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('All matchups fetch error:', err);
+      res.status(500).json({ error: 'Failed to fetch all matchups' });
+    } else {
+      res.json(results);
+    }
+    connection.end();
+  });
+});
+
+
 
 app.listen(port, () => console.log(`Listening on port ${port} `)); //for the dev version
