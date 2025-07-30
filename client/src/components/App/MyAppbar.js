@@ -22,10 +22,10 @@ const MyAppbar = () => {
         >🍿 Popcorn & Opinions</Typography>
 
         <Box sx={{ display: 'flex', gap: 2 }}>
-          <Button color="inherit" href="/">Landing</Button>
-          <Button color="inherit" href="/search">Search</Button>
-          <Button color="inherit" href="/review">Review</Button>
-          <Button color="inherit" href="/mypage">MyPage</Button>
+          <Button id="nav-landing" color="inherit" href="/">Landing</Button>
+          <Button id="nav-search" color="inherit" href="/search">Search</Button>
+          <Button id="nav-review" color="inherit" href="/review">Review</Button>
+          <Button id="nav-myPage" color="inherit" href="/mypage">MyPage</Button>
         </Box>
       </Toolbar>
     </AppBar>

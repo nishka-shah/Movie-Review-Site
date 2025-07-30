@@ -80,16 +80,18 @@ app.post('/api/search', async (req, res) => {
     LEFT JOIN Review R ON M.id = R.movieID
     WHERE
       (? = '' OR M.name = ?) AND
-      (? = '' OR (A.first_name = ? AND A.last_name = ?)) AND
-      (? = '' OR (D.first_name = ? AND D.last_name = ?))
+      (? = '' OR CONCAT(A.first_name, ' ', A.last_name) = ?) AND
+      (? = '' OR CONCAT(D.first_name, ' ', D.last_name) = ?)
     GROUP BY M.id;
   `;
 
   const params = [
-    title || '', title || '',
-    actor || '', actorFirst || '', actorLast || '',
-    director || '', directorFirst || '', directorLast || ''
+    title, title,
+    actor, actor,
+    director, director
   ];
+
+
 
   connection.query(query, params, (err, rows) => {
     if (err) {
@@ -167,7 +169,7 @@ app.get('/api/matchup', (req, res) => {
       console.error('Matchup fetch error:', err);
       res.status(500).json({ error: 'Failed to fetch matchup' });
     } else {
-      res.json(results[0]); 
+      res.json(results[0]);
     }
     connection.end();
   });
