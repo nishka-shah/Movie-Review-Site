@@ -4,11 +4,11 @@ const ReviewRating = (props) => {
   return (
     <Box>
       <Typography variant="h6" sx={{ mb: 1 }}>
-        ⭐ Enter your Rating
+        Enter your Rating
       </Typography>
 
       <Rating
-        name="movie-rating"
+        name="review-rating"
         value={Number(props.selectedRating)}
         onChange={(event, newValue) => {
           props.onRatingChange({ target: { value: newValue } });
@@ -16,7 +16,7 @@ const ReviewRating = (props) => {
         max={5}
         sx={{
           color: '#e50914',
-          fontSize: '2rem', // makes stars larger
+          fontSize: '2rem', 
         }}
       />
 
