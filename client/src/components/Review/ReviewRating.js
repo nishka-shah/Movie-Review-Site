@@ -1,20 +1,33 @@
-import * as React from 'react';
-//import all necessary libraries here, e.g., Material-UI Typography, as follows
-import Typography from '@mui/material/Typography';
+import { Rating, Typography, Box } from '@mui/material';
 
-const ReviewRating = () => {
-
-  //states declarations
-  //constants and functions declarations
-
+const ReviewRating = (props) => {
   return (
-    <>
-    
-    {/* JSX block */}
+    <Box>
+      <Typography variant="h6" sx={{ mb: 1 }}>
+        Enter your Rating
+      </Typography>
 
+      <Rating
+        name="review-rating"
+        id="review-rating"
+        value={Number(props.selectedRating)}
+        onChange={(event, newValue) => {
+          props.onRatingChange({ target: { value: newValue } });
+        }}
+        max={5}
+        sx={{
+          color: '#e50914',
+          fontSize: '2rem', 
+        }}
+      />
 
-    </>
+      {props.error && (
+        <Typography sx={{ mt: 1, color: '#ff4d4d', fontWeight: 500 }}>
+          {props.error}
+        </Typography>
+      )}
+    </Box>
   );
-}
+};
 
 export default ReviewRating;

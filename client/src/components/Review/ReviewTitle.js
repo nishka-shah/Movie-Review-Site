@@ -1,20 +1,38 @@
-import * as React from 'react';
-//import all necessary libraries here, e.g., Material-UI Typography, as follows
-import Typography from '@mui/material/Typography';
+import { TextField, Box } from '@mui/material';
 
-const ReviewTitle = () => {
-
-  //states declarations
-  //constants and functions declarations
-
+const ReviewTitle = (props) => {
   return (
-    <>
-    
-    {/* JSX block */}
-
-
-    </>
+    <Box>
+      <TextField
+        id="review-title"
+        label="Title your Review"
+        fullWidth
+        value={props.enteredTitle}
+        onChange={props.onTitleChange}
+        sx={{
+          input: { color: 'white' },
+          backgroundColor: 'rgba(255,255,255,0.05)',
+          borderRadius: 1,
+          color: 'white',
+          '& .MuiInputLabel-root': {
+            color: 'white',
+          },
+          '& .MuiOutlinedInput-root': {
+            color: 'white',
+            '& fieldset': {
+              borderColor: 'rgba(255,255,255,0.2)',
+            },
+            '&:hover fieldset': {
+              borderColor: '',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#e50914',
+            },
+          },
+        }}
+      />
+    </Box>
   );
-}
+};
 
 export default ReviewTitle;
