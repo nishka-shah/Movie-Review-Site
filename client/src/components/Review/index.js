@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import MyAppbar from '../App/MyAppbar';
-import { DialogTitle, Dialog, DialogActions, DialogContent} from '@mui/material';
+import { DialogTitle, Dialog, DialogActions, DialogContent } from '@mui/material';
 
 const Review = () => {
 
@@ -152,8 +152,9 @@ const Review = () => {
           <Grid container spacing={3}>
             {/* Header */}
             <Grid item xs={12}>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 1 }}>
-                Write a Review
+              {/* Adding component="h3" to pass d1 tests */}
+              <Typography variant="h4" component="h3" sx={{ fontWeight: 'bold', mb: 1 }}>
+                Review a movie
               </Typography>
               <Typography variant="subtitle1">
                 Share your thoughts on your favorite (or not-so-favorite) films.
@@ -170,7 +171,7 @@ const Review = () => {
               />
 
               {errors.movie && (
-                <Typography sx={{ mt: 1, color: '#ff4d4d', fontWeight: 500 }}>
+                <Typography color="red" sx={{ mt: 1 }}>
                   {errors.movie}
                 </Typography>
               )}
@@ -188,7 +189,7 @@ const Review = () => {
                 />
 
                 {errors.title && (
-                  <Typography sx={{ mt: 1, color: '#ff4d4d', fontWeight: 500 }}>
+                  <Typography color="red" sx={{ mt: 1 }}>
                     {errors.title}
                   </Typography>
                 )}
@@ -272,8 +273,8 @@ const Review = () => {
                     },
                   }}
                 >
-                  <DialogTitle sx={{ fontWeight: 'bold' }}>Review Submitted</DialogTitle>
-                  <DialogContent>
+                  <DialogTitle id="confirmation-message" sx={{ fontWeight: 'bold' }}>Your review has been received</DialogTitle>
+                  <DialogContent id='confirmation-message'>
                     <Typography sx={{ mb: 1 }}>
                       <strong>Movie:</strong> {submittedReview.selectedMovie}
                     </Typography>
@@ -284,7 +285,7 @@ const Review = () => {
                       <strong>Review Body:</strong> {submittedReview.enteredReview}
                     </Typography>
                     <Typography>
-                      <strong>Rating:</strong> {submittedReview.selectedRating} 
+                      <strong>Rating:</strong> {submittedReview.selectedRating}
                     </Typography>
                   </DialogContent>
                   <DialogActions>

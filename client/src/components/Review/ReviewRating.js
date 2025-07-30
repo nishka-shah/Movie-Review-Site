@@ -9,6 +9,7 @@ const ReviewRating = (props) => {
 
       <Rating
         name="review-rating"
+        id="review-rating"
         value={Number(props.selectedRating)}
         onChange={(event, newValue) => {
           props.onRatingChange({ target: { value: newValue } });
