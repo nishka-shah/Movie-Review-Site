@@ -128,190 +128,165 @@ const Review = () => {
 
 
   return (
-    <>
-      <MyAppbar />
-      <Box
+  <>
+    <MyAppbar />
+    <Box
+      sx={{
+        px: { xs: 2, sm: 4, md: 8 }, 
+        py: 6, 
+        pt: 1,
+        pb: 6,
+      }}
+    >
+      <Paper
+        elevation={4}
         sx={{
-          px: { xs: 2, sm: 4, md: 8 }, // horizontal padding (responsive)
-          py: 6, // vertical padding
-          pt: 1,
-          pb: 6,
+          p: 4,
+          backgroundColor: 'rgba(255, 255, 255, 0.02)',
+          borderRadius: 3,
+          maxWidth: 1000,
+          mx: 'auto',
+          mt: 4,
         }}
       >
-        <Paper
-          elevation={4}
-          sx={{
-            p: 4,
-            backgroundColor: 'rgba(255, 255, 255, 0.02)',
-            borderRadius: 3,
-            maxWidth: 1000,
-            mx: 'auto',
-            mt: 4,
-          }}
-        >
-          <Grid container spacing={3}>
-            {/* Header */}
-            <Grid item xs={12}>
-              {/* Adding component="h3" to pass d1 tests */}
-              <Typography variant="h4" component="h3" sx={{ fontWeight: 'bold', mb: 1 }}>
-                Review a movie
+        <Grid container spacing={3}>
+          {/* Header */}
+          <Grid item xs={12}>
+            {/* Adding component="h3" to pass d1 tests */}
+            <Typography variant="h4" component="h3" sx={{ fontWeight: 'bold', mb: 1 }}>
+              Review a movie
+            </Typography>
+            <Typography variant="subtitle1">
+              Share your thoughts on your favorite (or not-so-favorite) films.
+            </Typography>
+          </Grid>
+
+          {/* Movie Selection */}
+          <Grid item xs={12}>
+            <MovieSelection
+              movies={movies}
+              selectedMovie={selectedMovie}
+              onMovieChange={(e) => setSelectedMovie(e.target.value)}
+            />
+            {errors.movie && (
+              <Typography color="red" sx={{ mt: 1 }}>
+                {errors.movie}
               </Typography>
-              <Typography variant="subtitle1">
-                Share your thoughts on your favorite (or not-so-favorite) films.
-              </Typography>
-            </Grid>
-
-
-            {/* Movie Selection */}
-            <Grid item xs={12}>
-              <MovieSelection
-                movies={movies}
-                selectedMovie={selectedMovie}
-                onMovieChange={(e) => setSelectedMovie(e.target.value)}
-              />
-
-              {errors.movie && (
-                <Typography color="red" sx={{ mt: 1 }}>
-                  {errors.movie}
-                </Typography>
-              )}
-
-            </Grid>
-
-
-            {/* Review Title */}
-            <Grid item xs={12}>
-              <Box>
-
-                <ReviewTitle
-                  enteredTitle={enteredTitle}
-                  onTitleChange={(e) => setEnteredTitle(e.target.value)}
-                />
-
-                {errors.title && (
-                  <Typography color="red" sx={{ mt: 1 }}>
-                    {errors.title}
-                  </Typography>
-                )}
-              </Box>
-            </Grid>
-
-
-            {/* Review Body */}
-            <Grid item xs={12}>
-              <ReviewBody
-                enteredReview={enteredReview}
-                onReviewChange={(e) => setEnteredReview(e.target.value)}
-              />
-              {errors.body && (
-                <Typography color="red" sx={{ mt: 1 }}>
-                  {errors.body}
-                </Typography>
-              )}
-            </Grid>
-
-            {/* Review Rating */}
-            <Grid item xs={12}>
-              <ReviewRating
-                selectedRating={selectedRating}
-                onRatingChange={(e) => setSelectedRating(e.target.value)}
-              />
-              {errors.rating && (
-                <Typography color="red" sx={{ mt: 1 }}>
-                  {errors.rating}
-                </Typography>
-              )}
-            </Grid>
-
-            <Grid item xs={12}>
-              <Box
-                sx={{
-                  width: '100%',
-                  height: '2px',
-                  background: 'linear-gradient(to right, #e50914, transparent)',
-                  my: 2,
-                }}
-              />
-            </Grid>
-
-            {/* Submit Button */}
-            <Grid item xs={12}>
-              <Button
-                id="submit-button"
-                variant="contained"
-                color="primary"
-                onClick={handleSubmit}
-                sx={{
-                  backgroundColor: '#e50914',
-                  color: 'white',
-                  fontWeight: 'bold',
-                  borderRadius: 8,
-                  px: 4,
-                  py: 1,
-                  '&:hover': {
-                    backgroundColor: '#c21807',
-                  },
-                }}
-              >
-                Submit
-              </Button>
-            </Grid>
-
-            {/* Confirmation */}
-            {showConfirmation && (
-              <>
-                <Dialog
-                  open={showConfirmation}
-                  onClose={() => setShowConfirmation(false)}
-                  PaperProps={{
-                    sx: {
-                      backgroundColor: 'rgba(0,0,0,0.9)',
-                      color: 'white',
-                      borderRadius: 3,
-                      px: 4,
-                      py: 3,
-                    },
-                  }}
-                >
-                  <DialogTitle id="confirmation-message" sx={{ fontWeight: 'bold' }}>Your review has been received</DialogTitle>
-                  <DialogContent id='confirmation-message'>
-                    <Typography sx={{ mb: 1 }}>
-                      <strong>Movie:</strong> {submittedReview.selectedMovie}
-                    </Typography>
-                    <Typography sx={{ mb: 1 }}>
-                      <strong>Review Title:</strong> {submittedReview.enteredTitle}
-                    </Typography>
-                    <Typography sx={{ mb: 1 }}>
-                      <strong>Review Body:</strong> {submittedReview.enteredReview}
-                    </Typography>
-                    <Typography>
-                      <strong>Rating:</strong> {submittedReview.selectedRating}
-                    </Typography>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button
-                      onClick={() => setShowConfirmation(false)}
-                      sx={{
-                        color: 'white',
-                        backgroundColor: '#e50914',
-                        fontWeight: 'bold',
-                        px: 3,
-                        borderRadius: 8,
-                        '&:hover': { backgroundColor: '#c21807' },
-                      }}
-                    >
-                      Close
-                    </Button>
-                  </DialogActions>
-                </Dialog>
-
-              </>
             )}
           </Grid>
-        </Paper>
-      </Box>
-    </>
-  );
+
+          {/* Review Title */}
+          <Grid item xs={12}>
+            <Box>
+              <ReviewTitle
+                enteredTitle={enteredTitle}
+                onTitleChange={(e) => setEnteredTitle(e.target.value)}
+              />
+              {errors.title && (
+                <Typography color="red" sx={{ mt: 1 }}>
+                  {errors.title}
+                </Typography>
+              )}
+            </Box>
+          </Grid>
+
+          {/* Review Body */}
+          <Grid item xs={12}>
+            <ReviewBody
+              enteredReview={enteredReview}
+              onReviewChange={(e) => setEnteredReview(e.target.value)}
+            />
+            {errors.body && (
+              <Typography color="red" sx={{ mt: 1 }}>
+                {errors.body}
+              </Typography>
+            )}
+          </Grid>
+
+          {/* Review Rating */}
+          <Grid item xs={12}>
+            <ReviewRating
+              selectedRating={selectedRating}
+              onRatingChange={(e) => setSelectedRating(e.target.value)}
+            />
+            {errors.rating && (
+              <Typography color="red" sx={{ mt: 1 }}>
+                {errors.rating}
+              </Typography>
+            )}
+          </Grid>
+
+          <Grid item xs={12}>
+            <Box
+              sx={{
+                width: '100%',
+                height: '2px',
+                background: 'linear-gradient(to right, #e50914, transparent)',
+                my: 2,
+              }}
+            />
+          </Grid>
+
+          {/* Submit Button */}
+          <Grid item xs={12}>
+            <Button
+              id="submit-button"
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit}
+              sx={{
+                backgroundColor: '#e50914',
+                color: 'white',
+                fontWeight: 'bold',
+                borderRadius: 8,
+                px: 4,
+                py: 1,
+                '&:hover': {
+                  backgroundColor: '#c21807',
+                },
+              }}
+            >
+              Submit
+            </Button>
+          </Grid>
+
+          {/* Confirmation */}
+          {showConfirmation && submittedReview && (
+            <Grid item xs={12}>
+              <Paper
+                id="confirmation-message"
+                elevation={3}
+                sx={{
+                  backgroundColor: 'rgba(0,0,0,0.7)',
+                  color: 'white',
+                  p: 3,
+                  mb: 3,
+                  borderRadius: 2,
+                }}
+              >
+                <Typography variant="h6" gutterBottom>
+                  Your review has been received
+                </Typography>
+                <Typography sx={{ mb: 1 }}>
+                  <strong>Movie:</strong> {submittedReview.selectedMovie}
+                </Typography>
+                <Typography sx={{ mb: 1 }}>
+                  <strong>Review Title:</strong> {submittedReview.enteredTitle}
+                </Typography>
+                <Typography sx={{ mb: 1 }}>
+                  <strong>Review Body:</strong> {submittedReview.enteredReview}
+                </Typography>
+                <Typography>
+                  <strong>Rating:</strong> {submittedReview.selectedRating}
+                </Typography>
+              </Paper>
+            </Grid>
+          )}
+        </Grid>
+      </Paper>
+    </Box>
+  </>
+);
 
 };
 export default Review;
